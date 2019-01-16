@@ -73,6 +73,12 @@ int main()
       pos[current_reg].second++;
     }
   }
+
+  //累積和の計算
+  for(int i = n * m - 1; i > 0; i--)
+  {
+    pos[i].second += pos[i + 1].second;
+  }
  
   //不可能性の判定とai == bjとなる場所をaiを探す
   bool can = judge(a);
@@ -107,18 +113,16 @@ int main()
   int index = n * m;
   for(int i = n * m; i > 0; i--)
   {
-    while(pos[index].second == 0) index--;
-    if(index < i){
+    int possible = pos[i].second - (n * m - i);
+    if(possible == 0)
+    {
       cout << 0 << endl;
       return 0;
     }
-    if(only.count(i))
+    if(!only.count(i))
     {
-      result = result;
-    }else{
-      result = (result * pos[index].second) % 1000000007;
+      result = (result * possible) % 1000000007;
     }
-    pos[index].second--;
   }
   cout << result << endl;
   return 0;
